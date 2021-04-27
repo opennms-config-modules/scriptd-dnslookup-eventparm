@@ -1,0 +1,31 @@
+<scriptd-configuration xmlns="http://xmlns.opennms.org/xsd/config/scriptd" transactional="false">
+   <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh"/>
+
+   <start-script language="beanshell">
+     log = bsf.lookupBean("log");
+     server(12345);
+     source("/opt/opennms/etc/scriptd-parm-rdns.bsh");
+   </start-script>
+ 
+   <stop-script language="beanshell">
+     log.debug("executing a stop script");
+   </stop-script>
+ 
+   <event-script language="beanshell">
+      <uei name="uei.opennms.org/corporate_networks/traps/OSPF-State"/>	<!-- You can stack multiple UEIs here -->
+      <uei name="uei.opennms.org/corporate_networks/traps/OSPFNbrState"/>
+
+       appendUei = "WithLookup";		<!-- the resulting event appends this to the UEI -->
+       positions = new int[]{ 1, 2, 4 };	<!-- Do the work on parms parm[#1], parm[#2] and parm[#4] -->
+       event = bsf.lookupBean("event");
+       mangleEvent(event, appendUei, positions);
+<!--
+     <uei name="uei.opennms.org/someOther/eventUei"/>
+       appendUei = "WithLookup";
+       positions = new int[]{ 2, 3 };           //A new UEI With a different set of parameter positions
+       event = bsf.lookupBean("event");
+       mangleEvent(event, appendUei, positions);
+-->
+   </event-script>
+
+</scriptd-configuration>

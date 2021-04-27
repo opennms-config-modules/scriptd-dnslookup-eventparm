@@ -1,0 +1,26 @@
+= Using Scriptd to lookup IP addresses in event parameters
+
+== Purpose
+Events may contain IP addresses as parameters, where a hostname is preferred for
+human readability. The event translator does not offer a method to perform a 
+reverse DNS lookup, so we leverage Scriptd instead.
+
+== Installing
+ - Integrate the content of `scriptd-configuration.xml` with your existing
+configuration, or replace `scriptd-configuration.xml` with this one. 
+ - Copy the `scriptd-parm-rdns.bsh` script to `$OPENNMS_HOME/etc/`.
+ - Edit the `scriptd-configuration.xml` to specify the UEIs on which to act, 
+and the parameter positions that contain IP addresses to look up.
+
+== Usage
+Parameter positions on whose value we will perform a lookup are specified in the
+array `positions`. The `appendUei` string specifies a suffix to append to the new
+event emitted by Scriptd after the DNS lookups are performed.  New parameters 
+containing resolved hostnames are appended to the end of the parameter list in 
+new fields, with the parm names suffixed by `-hostname`.  The original event
+should be changed to `logmsg="donotpersist" and a new event created (using i
+the `appendUei` suffix) that displays the added parameters. Example event 
+configurations have been provided to illustrate this.
+
+== Questions?
+Ping @dino2gnt in https://chat.opennms.com/opennms/[the OpenNMS Mattermost chat]
