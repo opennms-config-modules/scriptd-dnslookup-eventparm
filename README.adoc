@@ -18,7 +18,7 @@ array `positions`. The `appendUei` string specifies a suffix to append to the ne
 event emitted by Scriptd after the DNS lookups are performed.  New parameters 
 containing resolved hostnames are appended to the end of the parameter list in 
 new fields, with the parm names suffixed by `-hostname`.  The original event
-should be changed to `logmsg="donotpersist" and a new event created (using i
+should be changed to `<logmsg dest="donotpersist">` and a new event created (using
 the `appendUei` suffix) that displays the added parameters. Example event 
 configurations have been provided to illustrate this.
 
